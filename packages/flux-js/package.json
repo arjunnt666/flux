@@ -1,0 +1,7 @@
+{
+  "name": "@flux/js",
+  "version": "0.1.0",
+  "description": "JS helpers for flux event envelopes (stub)",
+  "main": "src/index.js",
+  "license": "MIT"
+}

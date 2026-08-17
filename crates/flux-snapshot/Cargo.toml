@@ -1,0 +1,11 @@
+[package]
+name = "flux-snapshot"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+flux-core = { path = "../flux-core" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+parking_lot = { workspace = true }

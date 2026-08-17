@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flux-demo
+spec:
+  template:
+    spec:
+      containers:
+        - name: flux
+          image: flux:local
+          command: ["flux", "demo"]
+      restartPolicy: Never
+  backoffLimit: 1

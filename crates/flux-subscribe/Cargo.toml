@@ -1,0 +1,12 @@
+[package]
+name = "flux-subscribe"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+flux-core = { path = "../flux-core" }
+flux-store = { path = "../flux-store" }
+flux-project = { path = "../flux-project" }
+async-trait = { workspace = true }
+tracing = { workspace = true }

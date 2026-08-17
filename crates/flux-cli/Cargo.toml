@@ -1,0 +1,22 @@
+[package]
+name = "flux-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "flux"
+path = "src/main.rs"
+
+[dependencies]
+flux-core = { path = "../flux-core" }
+flux-store = { path = "../flux-store" }
+flux-project = { path = "../flux-project" }
+flux-subscribe = { path = "../flux-subscribe" }
+flux-snapshot = { path = "../flux-snapshot" }
+clap = { workspace = true }
+anyhow = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = "0.3"
