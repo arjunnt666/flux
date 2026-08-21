@@ -10,9 +10,9 @@ not a platform. not outbox + sagas + projections-as-a-service. a small embeddabl
 
 - in-memory event store with expected version checks
 - fold / rebuild for a stream
+- snapshot-accelerated rebuild (prefix skipped, tail folded, same final state)
 - catch-up subscription from a global position
-- snapshots
-- `flux demo` appends, folds, and reads the tail
+- `flux demo` snapshots mid-stream and proves the skip
 
 ## does not work yet
 
