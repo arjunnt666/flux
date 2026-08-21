@@ -10,3 +10,7 @@ flux-store = { path = "../flux-store" }
 flux-project = { path = "../flux-project" }
 async-trait = { workspace = true }
 tracing = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+serde_json = { workspace = true }
