@@ -1,56 +1,37 @@
 # flux
 
-event sourcing core.
+event sourcing core without the full CQRS religion.
 
-append only event log. projections. subscriptions.
-embeddable. not a full cqrs platform. not eventstoredb. not a message bus.
+append events. fold state. subscribe from a position. snapshot when the fold gets long. that is the whole pitch.
 
-if your domain already thinks in facts that happened, flux is a small shape for that.
-stream per aggregate. ordered events. rebuild read models. optional snapshots so you do not replay forever.
+not a platform. not outbox + sagas + projections-as-a-service. a small embeddable log with optimistic concurrency so two writers cannot silently overwrite each other.
 
-## why
+## works today
 
-most teams reinvent a thin event log inside the app.
-then they invent projection lag, dual writes, and a temporary table that becomes permanent.
+- in-memory event store with expected version checks
+- fold / rebuild for a stream
+- catch-up subscription from a global position
+- snapshots
+- `flux demo` appends, folds, and reads the tail
 
-flux is the boring middle:
-- append events to a stream
-- load stream history
-- fold into state
-- project into secondary views
-- subscribe from a position
+## does not work yet
 
-you still own the domain events and the projection logic.
-flux owns the plumbing shape.
+- durable disk or sqlite backend
+- multi-process consumer groups
+- production retention policies
 
-## status
-
-early skeleton with real fold and concurrency logic in the core path.
-in memory store works for tests and demos.
-durable backends are sketched, not production finished.
-
-do not put your ledger of record on this yet.
-do poke at how the crates are split if you care about event sourced boundaries.
-
-## crates
-
-- flux-core events, streams, envelopes, errors
-- flux-store append and read traits + memory backend
-- flux-project fold helpers and projection registry
-- flux-subscribe catch up subscriptions
-- flux-snapshot optional aggregate snapshots
-- flux-cli local demos
-
-js and python packages under packages for reading exported json.
-
-## quick start
+## try it
 
 ```bash
+cargo test --workspace
 cargo build -p flux-cli
-./target/debug/flux version
 ./target/debug/flux demo
 ```
 
+## crates
+
+flux-core, flux-store, flux-project, flux-subscribe, flux-snapshot, flux-cli
+
 ## license
 
-mit. append carefully. replay honestly.
+mit. append carefully. expected versions exist for a reason.
