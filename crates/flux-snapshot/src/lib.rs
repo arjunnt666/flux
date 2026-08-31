@@ -47,6 +47,22 @@ pub fn state_from<T: DeserializeOwned>(snap: &Snapshot) -> Result<T> {
     Ok(serde_json::from_value(snap.state.clone()).map_err(|e| flux_core::FluxError::Internal(e.to_string()))?)
 }
 
+/// Put a snapshot when `version` is a positive multiple of `every`.
+pub fn maybe_snapshot<T: Serialize, S: SnapshotStore>(
+    store: &S,
+    stream_id: StreamId,
+    version: StreamPosition,
+    every: u64,
+    state: &T,
+) -> Result<bool> {
+    if every == 0 || version.0 == 0 || version.0 % every != 0 {
+        return Ok(false);
+    }
+    store.put(snapshot_from(stream_id, version, state)?)?;
+    Ok(true)
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -60,4 +76,17 @@ mod tests {
         assert_eq!(state_from::<i64>(&got).unwrap(), 42);
         assert_eq!(got.version.0, 3);
     }
+
+    #[test]
+    fn maybe_snapshot_only_on_interval() {
+        let store = MemorySnapshotStore::new();
+        let sid = StreamId::new("acct");
+        assert!(!maybe_snapshot(&store, sid.clone(), StreamPosition(1), 2, &10i64).unwrap());
+        assert!(store.get(&sid).unwrap().is_none());
+        assert!(maybe_snapshot(&store, sid.clone(), StreamPosition(4), 2, &40i64).unwrap());
+        let got = store.get(&sid).unwrap().unwrap();
+        assert_eq!(got.version.0, 4);
+        assert_eq!(state_from::<i64>(&got).unwrap(), 40);
+    }
 }
+
